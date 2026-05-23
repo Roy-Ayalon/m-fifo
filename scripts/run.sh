@@ -15,7 +15,7 @@
 #   m-fifo/waves/    -> GTKWave save files (.gtkw)
 #
 # Dependencies on sibling repos (expected layout under the parent dir):
-#   ../m-ff/m_ff.v
+#   ../m-ff/rtl/m_ff.v
 #   ../m-assert/m_assert.v
 # =============================================================================
 
@@ -54,7 +54,7 @@ GTKW_FILE="$WAVES_DIR/fifo.gtkw"
 VCD_FILE="$SIM_DIR/tb.vcd"
 
 SOURCES=(
-    "$REPO_ROOT/m-ff/m_ff.v"
+    "$REPO_ROOT/m-ff/rtl/m_ff.v"
     "$REPO_ROOT/m-assert/m_assert.v"
     "$RTL_DIR/m_fifo.v"
     "$TB_FILE"
