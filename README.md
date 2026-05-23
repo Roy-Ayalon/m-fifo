@@ -138,16 +138,22 @@ The `-g2012` flag enables SystemVerilog literals (`'0`) used inside the module. 
 
 ## Testbench summary
 
-[fifo_tb.v](fifo_tb.v) instantiates the FIFO with `WIDTH=8`, `DEPTH=4` and drives:
+[tb/fifo_tb.v](tb/fifo_tb.v) is a self-checking testbench built in the same style as father's UART TB ([m-UART/tb/tb_uart.v](../m-UART/tb/tb_uart.v)). It instantiates the FIFO with `WIDTH=8`, `DEPTH=4` and runs four sub-tests against a software scoreboard queue:
 
-1. Reset for 5 cycles
-2. `push_t(6)`  — push the byte `6`
-3. `push_t(42)` — push the byte `42`
-4. Idle for several cycles
-5. `pop_t(6)`   — pop and check that `data_out == 6` (FIFO ordering)
-6. Idle, finish
+| #  | Test                                                              | What it verifies                                |
+|----|-------------------------------------------------------------------|-------------------------------------------------|
+| T1 | Push 3 bytes (`0x06, 0x2A, 0x17`), then pop 3                     | FIFO ordering — first-in is first-out           |
+| T2 | Push 4 bytes to fill `DEPTH`                                      | `full` rises on the filling push                |
+| T3 | Pop 4 bytes to drain                                              | `empty` rises on the draining pop               |
+| T4 | Interleaved push/pop sequence that forces a pointer wrap          | Read/write pointers wrap from `DEPTH-1` to `0`  |
 
-The `pop_t` task `$display`s and `$finish`es on a data mismatch — minimum viable self-check.
+Each `t_push` records the data into a scoreboard array; each `t_pop` reads the next expected value and compares against `data_out`. The TB ends with one of three ASCII banners:
+
+- **`UVM TEST PASSED`** — every popped byte matched the scoreboard
+- **`UVM TEST FAILED`** — a data mismatch, a push-on-full, or a pop-on-empty was driven
+- **`UVM TEST ERROR`** — the watchdog fired (`SIM_LENGTH = 20000` time units)
+
+Every `@(posedge clk)` in a driver task is followed by `#1` before any stimulus assignment to avoid the active-region race on iverilog (see lesson #4 in `.claude/context/lessons-learned.md`).
 
 ---
 
