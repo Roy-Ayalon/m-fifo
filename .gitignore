@@ -1,0 +1,8 @@
+# Simulation outputs
+sim/simv
+sim/*.vcd
+sim/*.fst
+*.vcd
+
+# macOS junk
+.DS_Store
