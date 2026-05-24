@@ -6,3 +6,6 @@ sim/*.fst
 
 # macOS junk
 .DS_Store
+
+# animation mark down files
+*.md
