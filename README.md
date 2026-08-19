@@ -6,6 +6,14 @@ A parameterizable synchronous FIFO built from `m_ff` flip-flop primitives and gu
 
 ---
 
+## Demo
+
+[`FIFO-Demo.mp4`](FIFO-Demo.mp4) — local walkthrough of the simulation passing (push/pop ordering, `full`/`empty` flags, pointer wrap).
+
+Full narrated walkthrough: https://claude.ai/design/p/6dfd5447-345f-440a-b977-0e1208aaed90?via=share
+
+---
+
 ## Features
 
 - **Configurable** `WIDTH`, `DEPTH`, and `RESET_VAL`
